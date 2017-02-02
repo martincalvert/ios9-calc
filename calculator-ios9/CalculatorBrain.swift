@@ -10,6 +10,12 @@ import Foundation
 
 class CalculatorBrain {
     private var accumulator = 0.0
+    private var pending: PendingBinaryOperationInfo?
+    var result: Double {
+        get {
+            return accumulator
+        }
+    }
     
     private var operations: Dictionary<String, Operation> = [
         "π" : Operation.Constant(M_PI),
@@ -50,8 +56,6 @@ class CalculatorBrain {
         }
     }
     
-    private var pending: PendingBinaryOperationInfo?
-    
     private func executePendingOperation(){
         if pending != nil {
             accumulator = pending!.binaryFunction(pending!.firstOperand, accumulator)
@@ -62,11 +66,5 @@ class CalculatorBrain {
     private struct PendingBinaryOperationInfo {
         var binaryFunction: (Double, Double) -> Double
         var firstOperand: Double
-    }
-    
-    var result: Double {
-        get {
-            return accumulator
-        }
     }
 }
